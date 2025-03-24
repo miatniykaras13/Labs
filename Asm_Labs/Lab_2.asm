@@ -1,49 +1,50 @@
-masm
-.model small
+;12 - (96385 + x - y) - z + 3698
+masm    
+model small
 .386
 .stack 100h
- ;12 - (96385 + x-y) - z + 3698
 .data
-    x db 0
-    y db 0
-    z db 0        
-    result dd ?   
-
+x db 0
+y dw 0
+z db 0
+result dd ?
 .code
 start:
-    mov ax, @data
+    mov ax, @data  ; стандартное начало программы
     mov ds, ax
 
-    mov al, x
-    cbw
+    ; 96385 = 0x17801
+    mov bx, 7801h  ; младшая часть 96385
+    mov dx, 1h     ; старшая часть 96385
 
-    add eax, 96385
+    mov al, x      ; x
+    cbw            ; расширение знака AL в AX
+    add bx, ax     ; 96385 + x
+    adc dx, 0      ; проверка переноса
 
-    mov ebx, eax
+    mov ax, y      ; y
+    sub bx, ax     ; 96385 + x - y
+    sbb dx, 0      ; проверка заема
 
-    mov al, y
-    cbw
-    sub ebx, eax
+    mov al, z      ; z
+    cbw            ; расширение знака AL в AX
+    add bx, ax     ; 96385 + x - y - z
+    adc dx, 0      ; проверка заема
 
-    mov ax, 12
-    cbw
+    sub bx, 0E72Ah ; вычитание 3698 (0xE72A)
+    sbb dx, 0      ; проверка заема
 
-    sub eax, ebx
-    mov ebx, eax
+    neg bx         ; смена знака
+    neg dx
+    sbb dx, 0      ; проверка заема
 
-    mov al, z 
-    cbw 
+    add bx, 0Ch    ; добавление 12
+    adc dx, 0      ; проверка переноса
 
-    sub ebx, eax
+    ; результат в bx:d
 
-    mov ax, 3698
-
-    sub ebx, eax
-
-
-    mov [ds:1000h], ebx
-    
-    
-    mov ax, 4C00h
+    mov [ds:1000h], bx ; сохранение результата
+    mov [ds:1002h], dx
+    mov ax, 4c00h  ; стандартное завершение программы
     int 21h
 end start

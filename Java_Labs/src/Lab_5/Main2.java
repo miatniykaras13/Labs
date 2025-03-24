@@ -1,6 +1,8 @@
 package Lab_5;
 
 
+import java.util.Objects;
+import java.util.Scanner;
 
 class DateTime
 {
@@ -90,10 +92,21 @@ class DateTime
         }
     }
 
-    public boolean equals(DateTime d)
-    {
-        return d.getDay() == _day && d.getMonth() == _month && d.getYear() == _year;
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        DateTime dateTime = (DateTime) o;
+        return _day == dateTime._day && _month == dateTime._month && _year == dateTime._year;
     }
+
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(_day, _month, _year);
+//    }
+//    public boolean equals(DateTime d)
+//    {
+//        return d.getDay() == _day && d.getMonth() == _month && d.getYear() == _year;
+//    }
 
     public String toString()
     {
@@ -103,16 +116,19 @@ class DateTime
 
 public class Main2
 {
-    public static void outputDate(DateTime d, int i)
+    public static void outputDate(DateTime[] d)
     {
-        System.out.printf("Объект dateTimes[%d]: ", i);
-        System.out.println(d.toString() + '\n');
+        for(int i = 0; i < d.length; i++)
+        {
+            System.out.println("dateTimes[" + i + "] = " + d[i].toString());
+        }
     }
 
     public static void main(String[] args)
     {
 
         DateTime[] dateTimes = new DateTime[4];
+        Scanner sc = new Scanner(System.in);
         dateTimes[0] = new DateTime();
         dateTimes[0].setDay(30);
         dateTimes[0].setMonth(12);
@@ -121,16 +137,53 @@ public class Main2
         dateTimes[2] = new DateTime(21, 10, 2010);
         dateTimes[3] = new DateTime(26, 1, 2100);
 
-        for(int i=0; i<dateTimes.length; i++)
+        System.out.println("Создан массив объектов класса DateTime со следующим содержимым: ");
+        outputDate(dateTimes);
+        System.out.println("Сколько объектов вы бы хотели изменить?(-1, если не нужно)");
+        int choice = sc.nextInt();
+        for(int i = 0; i < choice; i++)
         {
-            outputDate(dateTimes[i], i);
+            System.out.println("Какой объект вы бы хотели изменить?(-1, если не нужно)");
+            int c = sc.nextInt();
+            if (c != -1) {
+                System.out.println("Введите день объекта: ");
+                int day = sc.nextInt();
+                dateTimes[c - 1].setDay(day);
+                System.out.println("Введите месяц объекта: ");
+                int m = sc.nextInt();
+                dateTimes[c - 1].setMonth(m);
+                System.out.println("Введите год объекта: ");
+                int y = sc.nextInt();
+                dateTimes[c - 1].setYear(y);
+            }
         }
-
-        System.out.println("Объект dateTimes[0] равен dateTimes[1]: " + dateTimes[0].equals(dateTimes[1]));
-        dateTimes[0].increaseDateOnFive();
-        System.out.println("Объект dateTime[0] после увеличения числа дней на 5: " + dateTimes[0].toString());
-        System.out.println("Год в dateTimes[0] - високосный: " + dateTimes[0].isLeapYear());
-
+        System.out.println("Содержимое списка после изменения: ");
+        outputDate(dateTimes);
+        System.out.println("Дни скольких объектов DateTime вы хотите уменьшить на 5?(введите число объектов)");
+        int n = sc.nextInt();
+        for(int i = 0; i < n; i++)
+        {
+            System.out.println("Дни какого объекта DateTime вы хотите уменьшить на 5?(введите номер в списке)");
+            int m = sc.nextInt();
+            System.out.printf("Уменьшение дней объекта dateTimes[%d] на 5.\n", m-1);
+            dateTimes[i].increaseDateOnFive();
+            System.out.printf("Объект dateTimes[%d] после изменения: ", m-1);
+            System.out.print(dateTimes[m-1].toString() + "\n");
+        }
+        System.out.println("Сколько раз вы хотите сравнивать объекты dateTimes?");
+        int m = sc.nextInt();
+        for(int i = 0; i < m; i++)
+        {
+            System.out.println("Какие объекты списка dateTimes вы хотите сравнить?(введите номера в списке)");
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            System.out.printf("Объект dateTimes[%d] равен dateTimes[%d]: ", a, b);
+            System.out.print(dateTimes[a-1].equals(dateTimes[b-1]) + "\n");
+        }
+        System.out.println("Год какого объекта dateTimes вы хотите проверить на високосность?");
+        int v = sc.nextInt();
+        System.out.printf("Год объекта dateTimes[%d] - високосный: ", v-1);
+        System.out.print(dateTimes[v-1].isLeapYear());
 
     }
 }
