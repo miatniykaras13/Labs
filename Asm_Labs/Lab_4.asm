@@ -4,12 +4,36 @@ masm
 .stack 100h
 ;f = (12 - 96385) * x / (y - 3698)
 .data
-    x dw 123  
+    x db 0
+    y db 0       
+    result dd ?   
 
 .code
 start:
+    mov ax, @data
+    mov ds, ax
+
+    mov ax, 12
+    cbw
+    sub eax, 96385
+
+    mov ebx, eax
+
+    mov al, x
+    cbw
+
+    imul ebx, eax
+
+
+    mov al, y
+    cbw 
+
+    sub eax, 3698
+    xchg eax, ebx
+    idiv ebx
+
+    mov [ds:1000h], eax
     
-    x = x-2
     
     mov ax, 4C00h
     int 21h
