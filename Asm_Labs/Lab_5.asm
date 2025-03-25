@@ -3,14 +3,16 @@ model small
 .386
 .stack 100h
 .data
-    message1 db '(12 - 96385) * x / (y - 3698)', 13,10,'$'
-    message2 db 13,10,'Input x: $'
-    message3 db 13,10,'Input y: $'
-    message4 db 13,10,'Result: $'
+    message1 db 'y = 5x2 - 7x + 2', 13,10,'$'
+    message2 db 13,10,'Input a: $'
+    message3 db 13,10,'Input b: $'
+    true     db 13,10,'True $'
+    false    db 13,10,'False $'
 
-    x        dd ?
-    y        dd ?
-    f        dd ?
+    a        dd ?
+    b        dd ?
+    flag     db ?
+    temp     dd ?
 .code
     start:          
                     mov  ax,@data
@@ -20,39 +22,40 @@ model small
                     mov  dx,offset message1     ;(12 - 96385) * x / (y - 3698)
                     call PrintStr
 
-                    mov  dx, offset message2    ;input x
+                    mov  dx, offset message2    ;input a
                     call PrintStr
                     call Input
-                    mov  x,ecx
+                    mov  a,ecx
         
-                    mov  dx, offset message3    ;input y
+                    mov  dx, offset message3    ;input b
                     call PrintStr
                     call Input
-                    mov  y,ecx
-
-                    mov  dx, offset message4
-                    call PrintStr
+                    mov  b,ecx
 
 
-                    mov  ebx, 17881h
-                    neg  ebx
-
-                    add  ebx, 0Ch               ; 12 - 96385
-
-                    mov  eax, x
-                    neg  ebx
-                    imul ebx                    ; (12 - 96385) * x
-
-                    mov  ebx, y
-                    sub  ebx, 0E72h             ; y - 3698
-                    neg  ebx
-
-                    idiv ebx
-             
-                    mov  f, eax
-                    call PrintInt
-             
-
+                    mov  eax, a
+                    mov  ebx, a
+                    imul ebx
+                    mov  ebx, 5
+                    imul ebx
+                    mov  temp, eax
+                    mov  eax, a
+                    mov  ebx, 7
+                    imul ebx
+                    neg  eax
+                    add  eax, temp
+                    add  eax, 2
+                    mov  ebx, b
+                    cmp  eax, ebx
+                    jne  falseLabel
+                    mov  flag, 1
+                    call printFlag
+                    jmp  continue
+    falseLabel:     
+                    mov  flag, 0
+                    call printFlag
+                
+    continue:       
                     mov  ax,4c00h
                     int  21h
 
@@ -116,43 +119,19 @@ Input proc
                     ret
 
     endingNegative: 
-                    mov  y,ecx
-                    neg  y
-                    mov  ecx,y
+                    mov  b,ecx
+                    neg  b
+                    mov  ecx,b
                     ret
 Input endp
 
-PrintInt proc
-                    xor  cx, cx
-                    mov  ebx, 10
-                    mov  eax, f
-    
-                    cmp  eax, 0
-                    jge  convert
-                    mov  ah, 02h
-                    mov  dl, '-'
-                    int  21h
-                    mov  eax, f
-                    neg  eax
-
-    convert:        
-                    xor  dx, dx
-                    div  ebx
-                    add  dl, '0'
-                    push dx
-                    inc  cx
-                    cmp  eax, 0
-                    jnz  convert
-
+printFlag proc
+                    mov  dx, offset true
+                    cmp  flag, 0
+                    jne  print
+                    mov  dx, offset false
     print:          
-                    pop  dx
-                    mov  ah, 02h
-                    int  21h
-                    loop print
-
+                    call PrintStr
                     ret
-        
-        
-PrintInt endp
 end start
 
