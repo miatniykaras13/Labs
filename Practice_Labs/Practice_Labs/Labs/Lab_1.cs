@@ -26,7 +26,7 @@ namespace Practice_Labs.Labs
             if (n == 3)
             {
                 F_3();
-            }
+            }   
 
         }
         public void F_1()
@@ -65,9 +65,9 @@ namespace Practice_Labs.Labs
                 $"{Math.Sqrt((double)(b * a) * (1.0 - (double)(c * c) / (double)(Math.Pow(b + a, 2)))):F2}");
 
             Console.WriteLine($"\nУглы треугольника равны:" +
-                $" {Math.Acos((double)(b * b + c * c - a * a) / (double)(2 * b * c)) * (180 / Math.PI):F3};" +
-                $" {Math.Acos((double)(-b * b + c * c + a * a) / (double)(2 * a * c)) * (180 / Math.PI):F3};" +
-                $" {Math.Acos((double)(b * b - c * c + a * a) / (double)(2 * b * a)) * (180 / Math.PI):F3}\n"
+                $" {Math.Acos((double)(b * b + c * c - a * a) / (double)(2 * b * c)) * (180.0 / Math.PI):F3};" +
+                $" {Math.Acos((double)(-b * b + c * c + a * a) / (double)(2 * a * c)) * (180.0 / Math.PI):F3};" +
+                $" {Math.Acos((double)(b * b - c * c + a * a) / (double)(2 * b * a)) * (180.0 / Math.PI):F3}\n"
                 );
 
             bool isTriangle()
