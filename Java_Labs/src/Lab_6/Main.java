@@ -10,39 +10,45 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        Car car = Car.set(scanner);
 
+        Bicycle bicycle = Bicycle.set(scanner);
         while (true) {
             System.out.println(
                     "Выберете пункт меню:\n" +
                             "0. выход\n" +
                             "1. ехать\n" +
-                            "2. заправляться\n" +
-                            "3. менять колесо\n" +
-                            "4. вывести информацию об авто (марку тоже)\n" +
+                            "2. тормозить\n" +
+                            "3. сломать\n" +
+//                            "4. накачать колёса\n" +
+                            "4. вывести информацию о велосипеде (марку тоже)\n" +
                             ": "
             );
             int choice = scanner.nextInt();
             if (choice == 0)
-                break; // выход из while
+                break;
 
             switch (choice) {
                 case 1:
-                    car.move();
-                    break;  // выход из case, но остаемся в while
+                    bicycle.move();
+                    break;
                 case 2:
-                    System.out.println("Введи количество топлива:");
-                    double fuel = scanner.nextDouble();
-                    car.addFuel(fuel);
+                    bicycle.stop();
                     break;
                 case 3:
-                    car.changeWheel(scanner);
+                    bicycle.destroy();
                     break;
-                case 4:
-                    System.out.println(car.toString());
-                    break;
+//                case 4:
+//                    for(int i = 0; i < 2; i++)
+//                    {
+//                        System.out.println("На сколько бар накачать переднее колесо: ");
+//                        int x = scanner.nextInt();
+//                        bicycle.wheels[i].pump(x);
+//                    }
+//                    break;
+                    case 4:
+                        System.out.println("Информация о велосипеде: " + bicycle.toString());
                 default:
-                    System.out.println("выбран неправильный пункт меню, повторите ввод.");
+                    System.out.println("Выбран неправильный пункт меню, повторите ввод.");
             }
         }
         scanner.close();
