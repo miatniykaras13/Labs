@@ -10,7 +10,6 @@ namespace Practice_Labs
             {
                 try
                 {
-                    
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine("Введите номер лабораторной(-1 для выхода): ");
                     n = Convert.ToInt32(Console.ReadLine());
@@ -21,6 +20,10 @@ namespace Practice_Labs
                     if (n == 1)
                     {
                         Lab_1 l = new();
+                    }
+                    if (n == 2)
+                    {
+                        Lab_2 l = new();
                     }
                 }
                 catch (Exception)
