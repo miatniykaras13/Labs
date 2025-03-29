@@ -1,40 +1,41 @@
-masm
-.model small
+;(12 - 96385) * x / (y - 3698)
+masm    
+model small
 .386
 .stack 100h
-;f = (12 - 96385) * x / (y - 3698)
 .data
-    x db ?
-    y db ?       
-    result dd ?  
+    x      dd 1
+    y      dd 0
+    z      dd 0
+    result dd ?
 .code
-start:
-    mov ax, @data
-    mov ds, ax
+    start:
+          mov   ax, @data
+          mov   ds, ax
 
-    mov ax, 12
-    cbw
-    sub eax, 96385
+    ; 96385 = 0x17881
+          mov   ebx, 17881h
+                  ; EBX = 96385
 
-    mov ebx, eax
+            sub   ebx, 0Ch   
+                    ; EBX = -12 + 96385
 
-    mov al, x
-    cbw
+            mov   eax, x                                                 
+            imul  ebx                      ; EAX = -(12 - 96385) * x
 
-    imul ebx
+            mov   ebx, y                                    
+            sub   ebx, 0E72h 
+            neg ebx              ; EBX = -y + 3698
+                        
+            idiv  ebx                      ; EAX = (12 - 96385) * x / (y - 3698)
 
-;edx
-    mov al, y
-    cbw 
+            mov   dword ptr [result], eax   ; Сохраняем результат в result   ; Сохраняем результат в result
 
-    sub eax, 3698
-    xchg eax, ebx
-    idiv ebx
+    ; перемещение результата по адресу 1000h
+          mov   [ds:1000h], ax           ; Сохраняем младшее слово результата
+          mov   [ds:1002h], dx           ; Сохраняем старшее слово результата
 
-
-    
-
-    mov ax, 4C00h
-    int 21h
+          mov   ax, 4c00h
+          int   21h
 
 end start
