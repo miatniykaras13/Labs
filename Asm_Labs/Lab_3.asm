@@ -7,31 +7,10 @@ masm
     x db ?
     y db ?       
     result dd ?  
-    strokaX db 'Input x: ',  '$'
-    strokaY db 0Dh, 0Ah, 'Input y: ',  '$'
-    strokaRes db 0Dh, 0Ah, 'Result: $'
 .code
 start:
     mov ax, @data
     mov ds, ax
-
-    lea dx, strokaX
-    mov ah, 09h
-    int 21h
-
-    mov ah, 01h
-    int 21h
-    sub al, '0'
-    mov x, al
-
-    lea dx, strokaY
-    mov ah, 09h
-    int 21h
-
-    mov ah, 01h
-    int 21h
-    sub al, '0'
-    mov y, al
 
     mov ax, 12
     cbw
@@ -42,9 +21,9 @@ start:
     mov al, x
     cbw
 
-    imul ebx, eax
+    imul ebx
 
-
+;edx
     mov al, y
     cbw 
 
@@ -52,11 +31,6 @@ start:
     xchg eax, ebx
     idiv ebx
 
-    mov result, eax
-
-    lea dx, strokaRes
-    mov ah, 09h
-    int 21h
 
     
 
