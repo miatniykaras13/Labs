@@ -19,8 +19,9 @@ public class Main {
                             "1. ехать\n" +
                             "2. тормозить\n" +
                             "3. сломать\n" +
-//                            "4. накачать колёса\n" +
-                            "4. вывести информацию о велосипеде (марку тоже)\n" +
+                            "4. накачать колёса\n" +
+                            "5. заменить колесо\n" +
+                            "6. вывести информацию о велосипеде (марку тоже)\n" +
                             ": "
             );
             int choice = scanner.nextInt();
@@ -37,16 +38,19 @@ public class Main {
                 case 3:
                     bicycle.destroy();
                     break;
-//                case 4:
-//                    for(int i = 0; i < 2; i++)
-//                    {
-//                        System.out.println("На сколько бар накачать переднее колесо: ");
-//                        int x = scanner.nextInt();
-//                        bicycle.wheels[i].pump(x);
-//                    }
-//                    break;
-                    case 4:
-                        System.out.println("Информация о велосипеде: " + bicycle.toString());
+                case 4:
+                    System.out.println("Какое колесо накачать(введите номер):");
+                    int x = scanner.nextInt();
+                    bicycle.pumpWheel(scanner, x);
+                    break;
+                case 5:
+                    System.out.println("Какое колесо заменить(введите номер):");
+                    int n = scanner.nextInt();
+                    bicycle.changeWheel(scanner, n);
+                    break;
+                case 6:
+                    System.out.println("Информация о велосипеде: " + bicycle.toString());
+                    break;
                 default:
                     System.out.println("Выбран неправильный пункт меню, повторите ввод.");
             }

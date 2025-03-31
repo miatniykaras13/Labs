@@ -59,7 +59,7 @@ public class Bicycle
         {
             t = "Trial";
         }
-        string += "Марка: " + brand +"; Тип: " + t + "; Серийный номер рамы: " + serialNumber + "; Серийный номер руля: " + steeringWheel.getSerialNumber() + "Информация о колесах: [";
+        string += "Марка: " + brand +"; Тип: " + t + "; Серийный номер рамы: " + serialNumber + "; Серийный номер руля: " + steeringWheel.getSerialNumber() + "; Информация о колесах: [";
         for (int i = 0; i < 2; ++i) {
             string += wheels[i].toString() + ((i<1)?"; ":"");
         }
@@ -146,6 +146,10 @@ public class Bicycle
             System.out.println("Велосипед уже двигается");
             return;
         }
+        if (wheels[1].getCondition() == 0 || wheels[0].getCondition() == 0) {
+            System.out.println("Плохое состояние колес, велосипед не может двигаться");
+            return;
+        }
         if (wheels[1].getDiameter() != wheels[0].getDiameter()) {
             System.out.println("Колеса разных диаметров, велосипед не может двигаться");
             return;
@@ -155,7 +159,8 @@ public class Bicycle
             System.out.println("Давление в колесах слишком низкое, велосипед не может двигаться");
             return;
         }
-
+        this.wheels[0].deflate();
+        this.wheels[1].deflate();
         System.out.println("Велосипед двигается");
         isMoving = true;
     }
@@ -170,6 +175,8 @@ public class Bicycle
             System.out.println("Велосипед уже стоит");
             return;
         }
+        this.wheels[0].wearDown();
+        this.wheels[1].wearDown();
         System.out.println("Велосипед затормозил");
         isMoving = false;
     }
@@ -180,4 +187,34 @@ public class Bicycle
         System.out.println("Велосипед сломался");
         isMoving = false;
     }
+
+    public void pumpWheel(Scanner scanner, int n)
+    {
+        if(n == 1)
+        {
+            System.out.println("На сколько бар накачать переднее колесо: ");
+        }
+        else if(n == 2)
+        {
+            System.out.println("На сколько бар накачать заднее колесо: ");
+        }
+        int x = scanner.nextInt();
+        this.wheels[n-1].pump(x);
+    }
+    public void changeWheel(Scanner scanner, int n)
+    {
+        if(n == 1)
+        {
+            System.out.println("Замена переднего колеса.");
+        }
+        else if(n == 2)
+        {
+            System.out.println("Замена заднего колеса.");
+        }
+        this.wheels[n-1] = Wheel.set(scanner);
+        System.out.println("Колесо заменено.");
+
+    }
+
+
 }
