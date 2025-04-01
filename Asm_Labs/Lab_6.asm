@@ -3,25 +3,24 @@ model small
 .386
 .stack 100h
 .data
-    msg1 db 'Y * 24 + X / 64 $'
-    msg2 db 13,10,'Vvedite X: $'
-    msg3 db 13,10,'Vvedite Y: $'
-    msg4 db 13,10,'Recultat: $'
-    msg5 db 13,10,'Resultat raven null$'
-    msg6 db 13,10,'Resultat bolshe null$'
-    msg7 db 13,10,'Resultat menshe null$'
-    msg8 db 13,10,'Chet$'
-    msg9 db 13,10,'Nechet$'
-    x    dw ?                                ;un int
-    y    db ?                                ;un char
+    msg1 db 'Y * 64 + X / 36 $'
+    msg2 db 13,10,'Input X: $'
+    msg3 db 13,10,'Input Y: $'
+    msg4 db 13,10,'Result: $'
+    msg5 db 13,10,'Result equals zero$'
+    msg6 db 13,10,'Result is positive$'
+    msg7 db 13,10,'Result is negative$'
+    msg8 db 13,10,'Even$'
+    msg9 db 13,10,'Odd$'
+    x    dw ?                              ;int
+    y    db ?                              ;char
     f    dw ?
 .code
     start:    
               mov  ax,@data
               mov  ds, ax
-    ;Y * 24 + X / 64
 
-              mov  dx,offset msg1     ;vivod primera
+              mov  dx,offset msg1     ;Y * 64 + X / 36
               call PrintStr
 
               mov  dx,offset msg3
@@ -29,9 +28,7 @@ model small
               call InputChar
 
               mov  al,y
-              shl  al,1
-              add  al,al
-              shl  al,3
+              sal  al, 6
               mov  y,al
 
               mov  dx,offset msg2
@@ -39,39 +36,54 @@ model small
               call InputInt
               mov  x,cx
               mov  cx,x
-              shr  cx,6
+              mov  ax, cx
+              shr  cx, 5
+              mov  bx, cx
+              mov  cx, ax
+              and  cx, 1Fh
+              shr  cx, 2
+              dec  bx
+              add  bx, cx
+              mov  cx, bx
+              mov  x, cx
+
+                          
 
               mov  al,y
               cbw
-              add  cx,ax
-              mov  ax, cx
+              mov  bx, x
+              add  bx,ax
+              mov  ax, bx
+              mov  f,ax
               mov  dx, offset msg4
               call PrintStr
               call PrintInt
-              mov  f,ax
+              
               and  f,1
               jz   chet
               jmp  nechet
     chet:     
               mov  dx, offset msg8
               call PrintStr
+              jmp  continue
     nechet:   
               mov  dx, offset msg9
               call PrintStr
-
+              
+              mov  dx, offset msg5
+              call PrintStr
+    continue: 
               cmp  f,0
               jg   positive
               jl   negative
-              mov  dx, offset msg5
-              call PrintStr
     positive: 
               mov  dx,offset msg6
               call PrintStr
-              jmp  konec
+              jmp  ending
     negative: 
               mov  dx,offset msg7
               call PrintStr
-    konec:    
+    ending:   
               mov  ax, 4c00h          ;standart end prog
               int  21h
 
@@ -98,33 +110,33 @@ InputInt proc
               cbw
               mov  bx, 10
               mov  cx, ax
-    conv:     
+    convert:  
               xor  ax,ax
               mov  ah, 01h
               int  21h
               cmp  al,0dh
-              je   Endi
+              je   Endin
               sub  al,'0'
               cbw
               xchg ax,cx
               mul  bx
               add  cx, ax
-              jmp  conv
-    Endi:     
+              jmp  convert
+    Endin:    
               ret
 InputInt endp
 
 PrintInt proc
               xor  cx,cx
               mov  bx,10
-    convert:  
+    conv:     
               xor  dx,dx
               div  bx
               add  dl, '0'
               push dx
               inc  cx
               cmp  ax,0
-              jnz  convert
+              jnz  conv
     print:    
               mov  ah,02h
               pop  dx

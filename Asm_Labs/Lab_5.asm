@@ -3,6 +3,7 @@ model small
 .386
 .stack 100h
 .data
+    message  db 'x = y$'
     message1 db 'y = 5x2 - 7x + 2', 13,10,'$'
     message2 db 13,10,'Input a: $'
     message3 db 13,10,'Input b: $'
@@ -17,9 +18,9 @@ model small
     start:          
                     mov  ax,@data
                     mov  ds,ax
-    ;(12 - 96385) * x / (y - 3698)
 
-                    mov  dx,offset message1     ;(12 - 96385) * x / (y - 3698)
+
+                    mov  dx,offset message1
                     call PrintStr
 
                     mov  dx, offset message2    ;input a
@@ -32,7 +33,14 @@ model small
                     call Input
                     mov  b,ecx
 
-
+                    mov  eax, a
+                    
+                    cmp  eax, b
+                    jne  con
+    equals:         
+                    mov  dx, offset message
+                    call PrintStr
+    con:            
                     mov  eax, a
                     mov  ebx, a
                     imul ebx
@@ -54,6 +62,8 @@ model small
     falseLabel:     
                     mov  flag, 0
                     call printFlag
+    
+
                 
     continue:       
                     mov  ax,4c00h
@@ -133,5 +143,6 @@ printFlag proc
     print:          
                     call PrintStr
                     ret
+printFlag endp
 end start
 
