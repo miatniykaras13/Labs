@@ -11,6 +11,11 @@ public class Lab_3
     {
         Console.WriteLine("Введите количество школьников: ");
         var n = Convert.ToInt32(Console.ReadLine());
+        if (n < 1)
+        {
+            throw new Exception("Количество школьников должно быть больше 0.");
+        }
+
         var dates = new int[n];
         Console.WriteLine("Введите дни рождения всех школьников(через пробел): ");
         dates = Console.ReadLine().Split().Select(int.Parse).ToArray();
@@ -18,7 +23,12 @@ public class Lab_3
         {
             throw new Exception("Дни рождения должны быть больше нуля и меньше 32.");
         }
-        
+        Console.WriteLine($"Среди школьников " + (!A(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию а).");
+        Console.WriteLine($"Среди школьников " + (!B(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию б).");
+        Console.WriteLine($"Среди школьников " + (!C(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию в).");
+        Console.WriteLine($"Среди школьников " + (!D(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию г).");
+        Console.WriteLine($"Среди школьников " + (!E(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию д).");
+        Console.WriteLine($"Среди школьников " + (!F(dates)? "нету школьника" : "есть школьник") + ", удовлетворяющего условию е).");
         
 
 
@@ -26,14 +36,10 @@ public class Lab_3
 
     public bool A(int[] dates)
     {
+        int sum = dates.Sum();
         for (int i = 0; i < dates.Length; i++)
         {
-            int sum = 0;
-            for (int j = i; j < dates.Length; j++)
-            {
-                sum += dates[j];
-            }
-
+            sum -= dates[i];
             if (dates[i] == sum)
             {
                 return true;
@@ -44,13 +50,10 @@ public class Lab_3
     
     public bool B(int[] dates)
     {
-        for (int i = 0; i < dates.Length; i++)
+        int sum = 0;
+        for (int i = 1; i < dates.Length; i++)
         {
-            int sum = 0;
-            for (int j = 0; j < i; j++)
-            {
-                sum += dates[j];
-            }
+            sum += dates[i-1];
 
             if (dates[i] == sum / i)
             {
@@ -65,7 +68,7 @@ public class Lab_3
         int sum = dates.Sum();
         for (int i = 0; i < dates.Length; i++)
         {
-            if (dates[i] == sum/ dates.Length)
+            if ((double)dates[i] == (double)sum / dates.Length)
             {
                 return true;
             }
@@ -74,10 +77,15 @@ public class Lab_3
     }
     public bool D(int[] dates)
     {
+        if (dates.Length < 2)
+        {
+            return false;
+        }
+
         int sum = dates.Sum();
         for (int i = 0; i < dates.Length; i++)
         {
-            if (dates[i] == (sum - dates[i]) / dates.Length)
+            if (dates[i] == (sum - dates[i]) / (dates.Length - 1))
             {
                 return true;
             }
@@ -86,16 +94,53 @@ public class Lab_3
     }
     public bool E(int[] dates)
     {
-        int sum = dates.Sum();
-        for (int i = 0; i < dates.Length; i++)
+        if (dates.Length < 3)
         {
-            if (dates[i] == (sum - dates[i]) / dates.Length)
+            return false;
+        }
+        for (int i = 1; i < dates.Length - 1; i++)
+        {
+            if (dates[i] == Nod(dates[i - 1], dates[i + 1]))
             {
                 return true;
             }
         }
+
         return false;
     }
-    
+    public bool F(int[] dates)
+    {
+        if (dates.Length < 3)
+        {
+            return false;
+        }
+
+        for (int i = 2; i < dates.Length; i++)
+        {
+            if (dates[i] == Nok(dates[i - 1], dates[i - 2]))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int Nod(int a, int b)
+    {
+        while (b != 0)
+        {
+            int с = b;
+            b = a % b;
+            a = с;
+        }
+        return a;
+    }
+
+    public int Nok(int a, int b)
+    {
+        return a / Nod(a, b) * b;
+    }
+
 
 }
