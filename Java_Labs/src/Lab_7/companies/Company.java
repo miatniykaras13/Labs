@@ -1,25 +1,27 @@
-package Lab_7.classes;
+package Lab_7.companies;
 
 import java.util.Objects;
+import java.util.Scanner;
 
 public abstract class Company
 {
     private String _name;
     private int _income;
-    private static int _id;
+    private static int _companies;
+    private int _id;
 
     public Company(String name, int income)
     {
         setName(name);
         setIncome(income);
-        _id++;
+        _companies++;
     }
 
     public Company()
     {
         _name = "";
         _income = 0;
-        _id++;
+        _companies++;
     }
 
     public void setIncome(int income)
@@ -46,6 +48,18 @@ public abstract class Company
     {
         return _income;
     }
+    public static int getNumberOfCompanies()
+    {
+        return _companies;
+    }
+    public void setId(int id)
+    {
+        this._id = id;
+    }
+    public int getId()
+    {
+        return _id;
+    }
 
     @Override
     public boolean equals(Object o)
@@ -58,9 +72,9 @@ public abstract class Company
     @Override
     public String toString()
     {
-        return "Компания{" +
-                "Название='" + _name + '\'' +
-                ", Доход=" + _income +
+        return "Id = "  + _id +
+                " Название = '" + _name + '\'' +
+                ", Доход = " + _income +
                 '}';
     }
 }
