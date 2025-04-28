@@ -10,21 +10,8 @@ public class ShipbuildingCompany extends Company
 
     public ShipbuildingCompany() {
         super();
-        _capacity = 0;
-        _country = "";
-        this.setId(Company.getNumberOfCompanies());
     }
 
-    public ShipbuildingCompany(String name, int income) {
-        super(name, income);
-        this.setId(Company.getNumberOfCompanies());
-    }
-
-    public ShipbuildingCompany(String name, int income, int capacity, String country) {
-        super(name, income);
-        _capacity = capacity;
-        this.setId(Company.getNumberOfCompanies());
-    }
 
     public int getCapacity() {
         return _capacity;
@@ -33,7 +20,7 @@ public class ShipbuildingCompany extends Company
     public void setCapacity(int capacity){
         if(capacity < 0)
         {
-            System.out.println("Вместимость не может быть меньше 0.");
+            System.out.println("Вместимость не может быть меньше 0. Установлено значение 0.");
             return;
         }
         _capacity = capacity;
@@ -47,45 +34,22 @@ public class ShipbuildingCompany extends Company
         this._country = _country;
     }
 
-    public static ShipbuildingCompany update(Scanner scanner, ShipbuildingCompany ship){
-        System.out.println("Введите название судостроительной компании: ");
-        String name = scanner.next();
-        ship.setName(name);
-
-        System.out.println("Введите доход судостроительной компании: ");
-        int income = scanner.nextInt();
-        ship.setIncome(income);
-
-        System.out.println("Введите страну судостроительной компании: ");
-        String country = scanner.next();
-        ship.setCountry(country);
-
-        System.out.println("Введите вместимость: ");
-        int capacity = scanner.nextInt();
-        ship.setCapacity(capacity);
-
-        return ship;
+    @Override
+    public String work()
+    {
+        return "Судостроительная компания компания";
     }
-    public static ShipbuildingCompany set(Scanner scanner){
-        ShipbuildingCompany ship = new ShipbuildingCompany();
+    public void set(Scanner scanner){
 
-        System.out.println("Введите название судостроительной компании: ");
-        String name = scanner.next();
-        ship.setName(name);
-
-        System.out.println("Введите доход судостроительной компании: ");
-        int income = scanner.nextInt();
-        ship.setIncome(income);
+        super.set(scanner);
 
         System.out.println("Введите страну судостроительной компании: ");
         String country = scanner.next();
-        ship.setCountry(country);
+        this.setCountry(country);
 
         System.out.println("Введите вместимость: ");
         int capacity = scanner.nextInt();
-        ship.setCapacity(capacity);
-
-        return ship;
+        this.setCapacity(capacity);
     }
 
     @Override
@@ -99,9 +63,7 @@ public class ShipbuildingCompany extends Company
     @Override
     public String toString() {
         return "Судостроительная компания{" +
-                "Id = "  + this.getId() +
-                ", Название = '" + this.getName() + '\'' +
-                ", Доход = " + this.getIncome() +
+                super.toString() +
                 ", Вместимость = " + _capacity +
                 ", Страна производства = " + _country +
                 '}';

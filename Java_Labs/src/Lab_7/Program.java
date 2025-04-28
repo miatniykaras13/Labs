@@ -10,6 +10,7 @@ public class Program {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         List<Company> companies = new ArrayList<>();
+//        int last_id = 0;
         while (true) {
             System.out.println(
                     "Выберете пункт меню:\n" +
@@ -17,6 +18,7 @@ public class Program {
                             "1. создать объект\n" +
                             "2. изменить объект\n" +
                             "3. получить информацию по компании\n" +
+                            "4. проверить работу компании\n" +
                             ": "
             );
             int choice = scanner.nextInt();
@@ -25,23 +27,31 @@ public class Program {
 
             else if(choice == 1)
             {
-                System.out.println("Какую компанию вы хотите создать:\n1.Завод. \n2.Судостроительная компания. \n3.Страховая компания. ");
+                System.out.println("Какую компанию вы хотите создать:\n" +
+                        "1.Завод. \n" +
+                        "2.Судостроительная компания. \n" +
+                        "3.Страховая компания. ");
                 int comp = scanner.nextInt();
+                Company company = null;
+
                 if (comp == 1)
                 {
-                    Plant plant = Plant.set(scanner);
+                    Plant plant = new Plant();
+                    plant.set(scanner);
                     companies.add(plant);
                     System.out.println("Создан завод с такими данными: " + plant);
                 }
                 if (comp == 2)
                 {
-                    ShipbuildingCompany shipbuildingCompany = ShipbuildingCompany.set(scanner);
+                    ShipbuildingCompany shipbuildingCompany = new ShipbuildingCompany();
+                    shipbuildingCompany.set(scanner);
                     companies.add(shipbuildingCompany);
                     System.out.println("Создана судостроительная компания с такими данными: " + shipbuildingCompany);
                 }
                 if (comp == 3)
                 {
-                    InsuranceCompany insuranceCompany = InsuranceCompany.set(scanner);
+                    InsuranceCompany insuranceCompany = new InsuranceCompany();
+                    insuranceCompany.set(scanner);
                     companies.add(insuranceCompany);
                     System.out.println("Создана страховая компания с такими данными: " + insuranceCompany);
                 }
@@ -51,46 +61,40 @@ public class Program {
                 System.out.println("Введите id компании: ");
                 int id = scanner.nextInt();
                 System.out.println("Изменение информации о компании с данным id: ");
-                boolean found = false;
-                for(Company company : companies)
+                if(!(id > companies.size()))
                 {
-                    if(company.getId() == id)
-                    {
-                        if(company instanceof InsuranceCompany)
-                        {
-                            InsuranceCompany.update(scanner, (InsuranceCompany) company);
-                        }
-                        else if(company instanceof ShipbuildingCompany)
-                        {
-                            ShipbuildingCompany.update(scanner, (ShipbuildingCompany) company);
-                        }
-                        else if(company instanceof Plant)
-                        {
-                            Plant.update(scanner, (Plant) company);
-                        }
-                        found = true;
-                    }
+                    companies.get(id - 1).set(scanner);
                 }
-                if(!found)
+                else
                 {
                     System.out.println("Компания с таким id не найдена.");
                 }
+
+
             }
             else if(choice == 3)
             {
                 System.out.println("Введите id компании: ");
                 int id = scanner.nextInt();
                 System.out.println("Информация о компании с данным id: ");
-                boolean found = false;
-                for(Company company : companies)
+                if(!(id > companies.size()))
                 {
-                    if(company.getId() == id)
-                    {
-                        System.out.println(company);
-                        found = true;
-                    }
+                    System.out.println(companies.get(id - 1));
                 }
-                if(!found)
+                else
+                {
+                    System.out.println("Компания с таким id не найдена.");
+                }
+            }
+            else if(choice == 4)
+            {
+                System.out.println("Введите id компании: ");
+                int id = scanner.nextInt();
+                if(!(id > companies.size()))
+                {
+                    System.out.println(companies.get(id - 1).work());
+                }
+                else
                 {
                     System.out.println("Компания с таким id не найдена.");
                 }

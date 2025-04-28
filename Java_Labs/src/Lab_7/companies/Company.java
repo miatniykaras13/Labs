@@ -10,25 +10,19 @@ public abstract class Company
     private static int _companies;
     private int _id;
 
-    public Company(String name, int income)
-    {
-        setName(name);
-        setIncome(income);
-        _companies++;
-    }
+
 
     public Company()
     {
-        _name = "";
-        _income = 0;
         _companies++;
+        setId(_companies);
     }
 
     public void setIncome(int income)
     {
         if(income < 0)
         {
-            System.out.println("Invalid income");
+            System.out.println("Доход не должен быть меньше 0. Установлено значение 0.");
             return;
         }
         this._income = income;
@@ -61,6 +55,22 @@ public abstract class Company
         return _id;
     }
 
+    public String work()
+    {
+        return "Компания работает";
+    }
+
+    public void set(Scanner scanner)
+    {
+        System.out.println("Введите название компании: ");
+        String name = scanner.next();
+        this.setName(name);
+
+        System.out.println("Введите доход компании: ");
+        int income = scanner.nextInt();
+        this.setIncome(income);
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -73,8 +83,7 @@ public abstract class Company
     public String toString()
     {
         return "Id = "  + _id +
-                " Название = '" + _name + '\'' +
-                ", Доход = " + _income +
-                '}';
+                ", Название = '" + _name + '\'' +
+                ", Доход = " + _income;
     }
 }
