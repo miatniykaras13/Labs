@@ -25,15 +25,20 @@ namespace Practice_Labs
                     {
                         Lab_2 l = new();
                     }
+                    if (n == 3)
+                    {
+                        Lab_3 l = new();
+
+                    }
                     if (n == 4)
                     {
                         Lab_4 l = new();
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Ошибка.");
+                    Console.WriteLine($"Ошибка. {e.Message}");
                 }
             }
         }
