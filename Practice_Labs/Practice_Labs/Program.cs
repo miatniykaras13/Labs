@@ -25,6 +25,10 @@ namespace Practice_Labs
                     {
                         Lab_2 l = new();
                     }
+                    if (n == 4)
+                    {
+                        Lab_4 l = new();
+                    }
                 }
                 catch (Exception)
                 {
