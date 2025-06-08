@@ -10,7 +10,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        Car car = Car.set(scanner);
 
         while (true) {
             System.out.println(
@@ -26,24 +25,24 @@ public class Main {
             if (choice == 0)
                 break; // выход из while
 
-            switch (choice) {
-                case 1:
-                    car.move();
-                    break;  // выход из case, но остаемся в while
-                case 2:
-                    System.out.println("Введи количество топлива:");
-                    double fuel = scanner.nextDouble();
-                    car.addFuel(fuel);
-                    break;
-                case 3:
-                    car.changeWheel(scanner);
-                    break;
-                case 4:
-                    System.out.println(car.toString());
-                    break;
-                default:
-                    System.out.println("выбран неправильный пункт меню, повторите ввод.");
-            }
+//            switch (choice) {
+//                case 1:
+//                    car.move();
+//                    break;  // выход из case, но остаемся в while
+//                case 2:
+//                    System.out.println("Введи количество топлива:");
+//                    double fuel = scanner.nextDouble();
+//                    car.addFuel(fuel);
+//                    break;
+//                case 3:
+//                    car.changeWheel(scanner);
+//                    break;
+//                case 4:
+//                    System.out.println(car.toString());
+//                    break;
+//                default:
+//                    System.out.println("выбран неправильный пункт меню, повторите ввод.");
+//            }
         }
         scanner.close();
     }
