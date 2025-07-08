@@ -17,8 +17,8 @@ namespace Practice_Labs.Labs
     public class Lab_6
     {
         private readonly List<string> _surnamesPattern = new() { "Кузин", "Куравлев", "Кудин", "Кульков", "Кубиков" };
-        private readonly List<string> _surnames   = new() { "Видук", "Шмигеро", "Курьян", "Аплевич", "Орлюк" };
-        private readonly List<string> _cities         = new() { "Гродно", "Волковыск", "Путришки", "Обухово", "Минск" };
+        private readonly List<string> _surnames = new() { "Видук", "Шмигеро", "Курьян", "Аплевич", "Орлюк" };
+        private readonly List<string> _cities = new() { "Гродно", "Волковыск", "Путришки", "Обухово", "Минск" };
 
         private List<Employee> _employees;
         private List<Employee> _filteredEmployees;
