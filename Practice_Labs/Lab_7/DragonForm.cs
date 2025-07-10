@@ -1,44 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.Axes;
 using OxyPlot.WindowsForms;
-using System.Reflection;
-using Lab_7;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Lab_7;
-
 public partial class DragonForm : Form
 {
     private PlotView plotView;
-    private NumericUpDown numLevel;
-    private Button btnDraw;
+    private NumericUpDown numMaxLevel;
+    private Button btnAnimate;
     private PlotModel plotModel;
+
+
+    private Timer animationTimer;
+    private int currentLevel;
+    private int targetLevel;
 
     public DragonForm()
     {
-        this.Text = "Фрактал: Кривая дракона";
-        this.Size = new Size(800, 600);
+        Text = "Кривая дракона";
+        Size = new Size(800, 600);
 
-        numLevel = new NumericUpDown
+        numMaxLevel = new NumericUpDown
         {
             Minimum = 1,
-            Maximum = Int32.MaxValue,
+            Maximum = 10,
             Value = 10,
             Location = new Point(10, 10),
             Width = 60
         };
 
-
-        btnDraw = new Button
+        btnAnimate = new Button
         {
-            Text = "Построить",
+            Text = "Начертить",
             Location = new Point(80, 8),
             Width = 100
         };
-        btnDraw.Click += BtnDraw_Click;
+        btnAnimate.Click += BtnAnimate_Click;
 
         plotView = new PlotView
         {
@@ -48,20 +52,18 @@ public partial class DragonForm : Form
                     | AnchorStyles.Left | AnchorStyles.Right
         };
 
-        this.Controls.Add(numLevel);
-        this.Controls.Add(btnDraw);
-        this.Controls.Add(plotView);
+        Controls.Add(numMaxLevel);
+        Controls.Add(btnAnimate);
+        Controls.Add(plotView);
         InitializeComponent();
         InitializePlotModel();
+        InitializeTimer();
     }
 
 
     private void InitializePlotModel()
     {
-        plotModel = new PlotModel
-        {
-            Title = "Кривая дракона"
-        };
+        plotModel = new PlotModel { Title = "Кривая дракона" };
 
         plotModel.Axes.Add(new LinearAxis
         {
@@ -69,7 +71,6 @@ public partial class DragonForm : Form
             MajorGridlineStyle = LineStyle.Solid,
             MinorGridlineStyle = LineStyle.Dot
         });
-
         plotModel.Axes.Add(new LinearAxis
         {
             Position = AxisPosition.Left,
@@ -80,31 +81,61 @@ public partial class DragonForm : Form
         plotView.Model = plotModel;
     }
 
-    private void BtnDraw_Click(object sender, EventArgs e)
+    private void InitializeTimer()
     {
-        int level = (int)numLevel.Value;
+        animationTimer = new Timer
+        {
+            Interval = 500
+        };
+        animationTimer.Tick += AnimationTimer_Tick;
+    }
 
-        // Генерация точек фрактала
-        var points = GenerateDragonCurve(level);
+    private void BtnAnimate_Click(object sender, EventArgs e)
+    {
+        animationTimer.Stop();
 
-        // Создаём серию для отрисовки линий
+        currentLevel = 0;
+        targetLevel = (int)numMaxLevel.Value;
+
+
+        plotModel.Series.Clear();
+        plotModel.InvalidatePlot(true);
+
+
+        animationTimer.Start();
+    }
+
+    private void AnimationTimer_Tick(object sender, EventArgs e)
+    {
+
+        currentLevel++;
+        if (currentLevel > targetLevel)
+        {
+            animationTimer.Stop();
+            return;
+        }
+
+
+        var pts = GenerateDragonCurve(currentLevel);
+
+
         var series = new LineSeries
         {
             Color = OxyColors.DarkBlue,
             StrokeThickness = 2
         };
-        series.Points.AddRange(points);
+        series.Points.AddRange(pts);
 
-        // Очищаем предыдущий фрактал и добавляем новый
+
         plotModel.Series.Clear();
         plotModel.Series.Add(series);
 
-        // Автоматический подбор осей под данные
+
         plotModel.ResetAllAxes();
         plotModel.InvalidatePlot(true);
     }
 
-    // Возвращает список точек DataPoint для кривой дракона
+
     private List<DataPoint> GenerateDragonCurve(int level)
     {
         var pts = new List<DataPoint>
@@ -117,13 +148,12 @@ public partial class DragonForm : Form
         {
             var pivot = pts.Last();
             int count = pts.Count;
-            // Добавляем зеркально-повернутые точки
             for (int j = count - 2; j >= 0; j--)
             {
                 var p = pts[j];
                 double dx = p.X - pivot.X;
                 double dy = p.Y - pivot.Y;
-                // Поворот +90°: (x,y) → (−y, x)
+
                 double rx = -dy;
                 double ry = dx;
                 pts.Add(new DataPoint(pivot.X + rx, pivot.Y + ry));
@@ -133,9 +163,7 @@ public partial class DragonForm : Form
         return pts;
     }
 }
-
-
-static class Program
+public class Program
 {
     [STAThread]
     static void Main()

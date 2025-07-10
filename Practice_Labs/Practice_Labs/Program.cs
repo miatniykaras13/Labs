@@ -28,7 +28,6 @@ namespace Practice_Labs
                     if (n == 3)
                     {
                         Lab_3 l = new();
-
                     }
                     if (n == 4)
                     {
@@ -41,6 +40,10 @@ namespace Practice_Labs
                     if (n == 6)
                     {
                         Lab_6 l = new();
+                    }
+                    if (n == 8)
+                    {
+                        Lab_8 l = new();
                     }
                 }
                 catch (Exception e)
