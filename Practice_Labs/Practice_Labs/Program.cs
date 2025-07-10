@@ -45,6 +45,10 @@ namespace Practice_Labs
                     {
                         Lab_8 l = new();
                     }
+                    if (n == 9)
+                    {
+                        Lab_9 l = new();
+                    }
                 }
                 catch (Exception e)
                 {
