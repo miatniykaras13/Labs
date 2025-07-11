@@ -17,7 +17,7 @@ namespace Practice_Labs.Labs
             var r = new Random(DateTime.Now.Millisecond);
             int a, b, i = 1, remained;
             var incorrect = new List<(int, int, int)>();
-            var testEnds = DateTime.Now.AddSeconds(10);
+            var testEnds = DateTime.Now.AddSeconds(60);
 
             Console.WriteLine("Выберите тип теста:" +
                             "\n1.Тест на время." +
