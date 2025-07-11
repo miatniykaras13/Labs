@@ -50,7 +50,7 @@ namespace Practice_Labs.Labs
             var matchC = Regex.Match(upd, @"([+-]?[\d\.]+)");
 
 
-            a = Parse(matchA.Groups[1].Value, defaultValue: 1);
+            a = Parse(matchA.Groups[1].Value, defaultValue: 0);
             b = Parse(matchB.Groups[1].Value, defaultValue: 0);
             c = Parse(matchC.Groups[1].Value, defaultValue: 0);
 
