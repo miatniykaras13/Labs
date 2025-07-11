@@ -3,7 +3,7 @@ namespace Practice_Labs
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             int n;
             while (true)
@@ -52,6 +52,7 @@ namespace Practice_Labs
                     if (n == 10)
                     {
                         Lab_10 l = new();
+                        await l.F_1();
                     }
                 }
                 catch (Exception e)
